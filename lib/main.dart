@@ -297,7 +297,7 @@ class _OrdersPageState extends State<OrdersPage> {
                     subtitle: Text(
                         'Status: ${order['status']} • Total: \$${order['total_amount'].toStringAsFixed(2)}'),
                     trailing: Text(order['order_time']),
-                    onTap: () => _showOrderDetails(order),
+                    onTap: () => _showOrderDetails(order, context),
                   ),
                 );
               },
@@ -305,7 +305,7 @@ class _OrdersPageState extends State<OrdersPage> {
     );
   }
 
-  void _showOrderDetails(Map<String, dynamic> order) async {
+  void _showOrderDetails(Map<String, dynamic> order, BuildContext context) async {
     final orderItems = await DatabaseHelper.instance.getOrderItems(order['id']);
 
     showDialog(
@@ -391,7 +391,7 @@ class _MenuPageState extends State<MenuPage> {
               const Text('Menu Management',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ElevatedButton(
-                onPressed: _showAddCategoryDialog,
+                onPressed: _showAddCategoryDialog(context),
                 child: const Text('Add Category'),
               ),
             ],
@@ -431,7 +431,7 @@ class _MenuPageState extends State<MenuPage> {
                 icon: const Icon(Icons.add),
                 label: const Text('Add Dish'),
                 onPressed: _selectedCategoryId != null
-                    ? () => _showAddDishDialog(_selectedCategoryId!)
+                    ? () => _showAddDishDialog(_selectedCategoryId!, context)
                     : null,
               ),
             ],
@@ -455,11 +455,11 @@ class _MenuPageState extends State<MenuPage> {
                           children: [
                             IconButton(
                               icon: const Icon(Icons.edit, color: Colors.blue),
-                              onPressed: () => _showEditDishDialog(dish),
+                              onPressed: () => _showEditDishDialog(dish, context),
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete, color: Colors.red),
-                              onPressed: () => _showDeleteDishDialog(dish),
+                              onPressed: () => _showDeleteDishDialog(dish, context) ,
                             ),
                           ],
                         ),
@@ -472,7 +472,7 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  void _showAddCategoryDialog() {
+   _showAddCategoryDialog(BuildContext context) {
     final TextEditingController controller = TextEditingController();
 
     showDialog(
@@ -508,7 +508,7 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  void _showAddDishDialog(int categoryId) {
+  void _showAddDishDialog(int categoryId, BuildContext context) {
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();
     final priceController = TextEditingController();
@@ -581,7 +581,7 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  void _showEditDishDialog(Map<String, dynamic> dish) {
+  void _showEditDishDialog(Map<String, dynamic> dish, BuildContext context) {
     final nameController = TextEditingController(text: dish['name']);
     final descriptionController =
         TextEditingController(text: dish['description'] ?? '');
@@ -657,7 +657,7 @@ class _MenuPageState extends State<MenuPage> {
     );
   }
 
-  void _showDeleteDishDialog(Map<String, dynamic> dish) {
+  void _showDeleteDishDialog(Map<String, dynamic> dish , BuildContext context ) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
